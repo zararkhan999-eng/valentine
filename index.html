@@ -22,13 +22,11 @@
         --ink: #5a2450;
         --shadow: 0 12px 30px rgba(255, 74, 160, 0.25);
       }
-
       * {
         box-sizing: border-box;
         margin: 0;
         padding: 0;
       }
-
       body {
         min-height: 100vh;
         display: flex;
@@ -39,7 +37,6 @@
         color: var(--ink);
         overflow: hidden;
       }
-
       .ambient {
         position: fixed;
         inset: 0;
@@ -51,7 +48,6 @@
           radial-gradient(circle at 85% 80%, rgba(255, 111, 178, 0.35), transparent 35%);
         filter: blur(0px);
       }
-
       .stage {
         position: relative;
         width: min(900px, 92vw);
@@ -70,21 +66,19 @@
         --spot-x: 50%;
         --spot-y: 60%;
         --spot-size: 180px;
+        --photo-size: clamp(110px, 18vw, 170px);
       }
-
       .title {
         font-size: clamp(1.6rem, 3.2vw, 2.5rem);
         text-align: center;
         letter-spacing: 0.5px;
         font-weight: 700;
       }
-
       .subtitle {
         font-size: 1rem;
         color: rgba(90, 36, 80, 0.8);
         text-align: center;
       }
-
       .buttons {
         position: relative;
         width: 100%;
@@ -92,8 +86,9 @@
         display: flex;
         align-items: center;
         justify-content: center;
+        padding-right: calc(var(--photo-size) + 20px);
+        padding-bottom: calc((var(--photo-size) * 4 / 3) - 12px);
       }
-
       .spotlight {
         position: absolute;
         inset: 0;
@@ -107,18 +102,16 @@
         );
         transition: background 0.4s ease;
       }
-
       .hearts {
         position: absolute;
         inset: 0;
         pointer-events: none;
       }
-
       .photo {
         position: absolute;
         right: 24px;
         bottom: 24px;
-        width: clamp(110px, 18vw, 170px);
+        width: var(--photo-size);
         aspect-ratio: 3 / 4;
         border-radius: 18px;
         object-fit: cover;
@@ -127,7 +120,6 @@
         transform: rotate(2deg);
         z-index: 2;
       }
-
       .heart {
         --size: 18px;
         --speed: 8s;
@@ -139,7 +131,6 @@
         opacity: 0.6;
         animation: drift var(--speed) ease-in-out infinite;
       }
-
       .heart::before,
       .heart::after {
         content: "";
@@ -149,15 +140,12 @@
         background: inherit;
         border-radius: 50%;
       }
-
       .heart::before {
         left: calc(var(--size) / -2);
       }
-
       .heart::after {
         top: calc(var(--size) / -2);
       }
-
       .btn {
         border: none;
         border-radius: 999px;
@@ -168,7 +156,6 @@
         transition: transform 0.25s ease, box-shadow 0.25s ease, filter 0.25s ease;
         font-family: "Baloo 2", sans-serif;
       }
-
       #yes-btn {
         background: linear-gradient(135deg, var(--pink-300), var(--pink-500));
         color: white;
@@ -176,7 +163,6 @@
         position: relative;
         z-index: 2;
       }
-
       #no-btn {
         background: white;
         color: var(--ink);
@@ -185,19 +171,16 @@
         z-index: 1;
         box-shadow: 0 10px 20px rgba(255, 154, 197, 0.25);
       }
-
       #no-btn.hidden {
         opacity: 0;
         pointer-events: none;
         transform: scale(0.6);
       }
-
       .yes-big {
         transform: scale(1.75);
         box-shadow: 0 20px 35px rgba(255, 74, 160, 0.45);
         filter: saturate(1.1);
       }
-
       .success {
         position: absolute;
         inset: 0;
@@ -211,26 +194,21 @@
         padding: 32px;
         z-index: 5;
       }
-
       .success.show {
         display: flex;
         animation: pop 0.4s ease;
       }
-
       .stage.success-active .buttons,
       .stage.success-active .subtitle {
         opacity: 0;
         pointer-events: none;
       }
-
       .stage.success-active .title {
         opacity: 0.2;
       }
-
       .success h2 {
         font-size: clamp(1.6rem, 3vw, 2.4rem);
       }
-
       .sparkle {
         width: 120px;
         height: 120px;
@@ -239,7 +217,6 @@
         opacity: 0.8;
         animation: float 3s ease-in-out infinite;
       }
-
       .modal {
         position: fixed;
         inset: 0;
@@ -249,11 +226,9 @@
         background: rgba(255, 192, 218, 0.5);
         z-index: 10;
       }
-
       .modal.show {
         display: flex;
       }
-
       .modal-card {
         background: white;
         padding: 24px 32px;
@@ -262,12 +237,10 @@
         text-align: center;
         max-width: 320px;
       }
-
       .modal-card p {
         margin-bottom: 16px;
         font-size: 1.05rem;
       }
-
       .modal-card button {
         border: none;
         background: var(--pink-400);
@@ -277,7 +250,6 @@
         font-weight: 600;
         cursor: pointer;
       }
-
       @keyframes float {
         0%,
         100% {
@@ -287,7 +259,6 @@
           transform: translateY(-14px);
         }
       }
-
       @keyframes pop {
         0% {
           transform: scale(0.9);
@@ -298,7 +269,6 @@
           opacity: 1;
         }
       }
-
       @keyframes drift {
         0%,
         100% {
@@ -308,12 +278,14 @@
           transform: translateY(-18px) rotate(45deg);
         }
       }
-
       @media (max-width: 600px) {
         .stage {
           padding: 22px;
         }
-
+        .buttons {
+          padding-right: calc(var(--photo-size) + 8px);
+          padding-bottom: calc((var(--photo-size) * 4 / 3) - 20px);
+        }
         .btn {
           font-size: 1rem;
           padding: 14px 20px;
@@ -345,30 +317,27 @@
       <div class="success" id="success">
         <div class="sparkle"></div>
         <h2>We are going out!!! (no idea when)</h2>
-        <p>You made my day Sanna (aka coolest gyal) </p>
+        <p>You made my day gng </p>
       </div>
     </main>
-
     <div class="modal" id="modal">
       <div class="modal-card">
-        <p>You could've just clicked it in the first place bruh</p>
+        <p>You could've just click it in the first place bruh</p>
         <button id="modal-close">ok fine</button>
       </div>
     </div>
-
     <script>
       const stage = document.getElementById("stage");
       const buttons = document.getElementById("buttons");
       const noBtn = document.getElementById("no-btn");
       const yesBtn = document.getElementById("yes-btn");
       const spotlight = document.getElementById("spotlight");
+      const photo = document.querySelector(".photo");
       const modal = document.getElementById("modal");
       const modalClose = document.getElementById("modal-close");
       const success = document.getElementById("success");
-
       let noClicks = 0;
       const yesScales = [1, 1.12, 1.28, 1.48, 1.75];
-
       const rectWithinContainer = (rect) => {
         const containerRect = buttons.getBoundingClientRect();
         return {
@@ -378,7 +347,6 @@
           bottom: rect.bottom - containerRect.top,
         };
       };
-
       const overlaps = (r1, r2, gap = 12) => {
         return !(
           r1.right + gap < r2.left ||
@@ -387,18 +355,16 @@
           r1.top - gap > r2.bottom
         );
       };
-
       const moveNoButton = () => {
         const containerRect = buttons.getBoundingClientRect();
         const noRect = noBtn.getBoundingClientRect();
         const yesRect = rectWithinContainer(yesBtn.getBoundingClientRect());
+        const photoRect = rectWithinContainer(photo.getBoundingClientRect());
         const padding = 12;
         const maxX = Math.max(padding, containerRect.width - noRect.width - padding);
         const maxY = Math.max(padding, containerRect.height - noRect.height - padding);
-
         let tries = 0;
         let next = null;
-
         while (tries < 40 && !next) {
           const x = padding + Math.random() * (maxX - padding);
           const y = padding + Math.random() * (maxY - padding);
@@ -408,23 +374,20 @@
             right: x + noRect.width,
             bottom: y + noRect.height,
           };
-          if (!overlaps(candidate, yesRect, 28)) {
+          if (!overlaps(candidate, yesRect, 28) && !overlaps(candidate, photoRect, 18)) {
             next = candidate;
           }
           tries += 1;
         }
-
         if (!next) {
           next = {
             left: padding,
             top: padding,
           };
         }
-
         noBtn.style.left = `${next.left}px`;
         noBtn.style.top = `${next.top}px`;
       };
-
       const updateYesSize = () => {
         const scale = yesScales[Math.min(noClicks, yesScales.length - 1)];
         yesBtn.style.transform = `scale(${scale})`;
@@ -437,7 +400,6 @@
         }
         updateSpotlight(scale);
       };
-
       const updateSpotlight = (scale) => {
         const stageRect = stage.getBoundingClientRect();
         const yesRect = yesBtn.getBoundingClientRect();
@@ -448,20 +410,16 @@
         stage.style.setProperty("--spot-y", `${centerY}px`);
         stage.style.setProperty("--spot-size", `${size}px`);
       };
-
       const showSuccess = () => {
         stage.classList.add("success-active");
         success.classList.add("show");
       };
-
       const showModal = () => {
         modal.classList.add("show");
       };
-
       const hideModal = () => {
         modal.classList.remove("show");
       };
-
       noBtn.addEventListener("click", () => {
         noClicks += 1;
         if (noClicks >= 4) {
@@ -471,7 +429,6 @@
         }
         updateYesSize();
       });
-
       yesBtn.addEventListener("click", () => {
         if (noClicks >= 1) {
           showModal();
@@ -479,19 +436,16 @@
         }
         showSuccess();
       });
-
       modalClose.addEventListener("click", () => {
         hideModal();
         showSuccess();
       });
-
       window.addEventListener("resize", () => {
         if (!noBtn.classList.contains("hidden")) {
           moveNoButton();
         }
         updateSpotlight(yesScales[Math.min(noClicks, yesScales.length - 1)]);
       });
-
       moveNoButton();
       updateYesSize();
     </script>
