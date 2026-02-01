@@ -67,6 +67,9 @@
         justify-content: space-between;
         gap: 24px;
         overflow: hidden;
+        --spot-x: 50%;
+        --spot-y: 60%;
+        --spot-size: 180px;
       }
 
       .title {
@@ -89,6 +92,70 @@
         display: flex;
         align-items: center;
         justify-content: center;
+      }
+
+      .spotlight {
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+        background: radial-gradient(
+          circle var(--spot-size) at var(--spot-x) var(--spot-y),
+          rgba(255, 255, 255, 0.1) 0%,
+          rgba(255, 255, 255, 0) 50%,
+          rgba(255, 193, 217, 0.35) 68%,
+          rgba(255, 111, 178, 0.55) 100%
+        );
+        transition: background 0.4s ease;
+      }
+
+      .hearts {
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+      }
+
+      .photo {
+        position: absolute;
+        right: 24px;
+        bottom: 24px;
+        width: clamp(110px, 18vw, 170px);
+        aspect-ratio: 3 / 4;
+        border-radius: 18px;
+        object-fit: cover;
+        border: 6px solid rgba(255, 255, 255, 0.8);
+        box-shadow: 0 16px 28px rgba(255, 74, 160, 0.25);
+        transform: rotate(2deg);
+        z-index: 2;
+      }
+
+      .heart {
+        --size: 18px;
+        --speed: 8s;
+        position: absolute;
+        width: var(--size);
+        height: var(--size);
+        background: var(--pink-300);
+        transform: rotate(45deg);
+        opacity: 0.6;
+        animation: drift var(--speed) ease-in-out infinite;
+      }
+
+      .heart::before,
+      .heart::after {
+        content: "";
+        position: absolute;
+        width: var(--size);
+        height: var(--size);
+        background: inherit;
+        border-radius: 50%;
+      }
+
+      .heart::before {
+        left: calc(var(--size) / -2);
+      }
+
+      .heart::after {
+        top: calc(var(--size) / -2);
       }
 
       .btn {
@@ -232,6 +299,16 @@
         }
       }
 
+      @keyframes drift {
+        0%,
+        100% {
+          transform: translateY(0px) rotate(45deg);
+        }
+        50% {
+          transform: translateY(-18px) rotate(45deg);
+        }
+      }
+
       @media (max-width: 600px) {
         .stage {
           padding: 22px;
@@ -247,6 +324,16 @@
   <body>
     <div class="ambient"></div>
     <main class="stage" id="stage">
+      <div class="spotlight" id="spotlight"></div>
+      <div class="hearts" aria-hidden="true">
+        <span class="heart" style="--size: 16px; --speed: 7s; top: 12%; left: 10%;"></span>
+        <span class="heart" style="--size: 20px; --speed: 9s; top: 20%; left: 78%; background: var(--pink-400);"></span>
+        <span class="heart" style="--size: 14px; --speed: 8s; top: 68%; left: 15%; background: var(--pink-200);"></span>
+        <span class="heart" style="--size: 18px; --speed: 10s; top: 72%; left: 82%;"></span>
+        <span class="heart" style="--size: 12px; --speed: 6s; top: 40%; left: 35%; background: var(--pink-200);"></span>
+        <span class="heart" style="--size: 22px; --speed: 11s; top: 32%; left: 60%; background: var(--pink-400);"></span>
+      </div>
+      <img class="photo" src="IMG_2583.jpeg" alt="Memory" />
       <div>
         <h1 class="title">Are YOU lonely too at 14 feb?</h1>
         <p class="subtitle">Be honest, i promise it is cute</p>
@@ -258,13 +345,13 @@
       <div class="success" id="success">
         <div class="sparkle"></div>
         <h2>We are going out!!! (no idea when)</h2>
-        <p>You made my day SANNNAAAA</p>
+        <p>You made my day</p>
       </div>
     </main>
 
     <div class="modal" id="modal">
       <div class="modal-card">
-        <p>You could've just click it the first place bruh</p>
+        <p>You could've just do it in the first place bruh</p>
         <button id="modal-close">ok fine</button>
       </div>
     </div>
@@ -274,6 +361,7 @@
       const buttons = document.getElementById("buttons");
       const noBtn = document.getElementById("no-btn");
       const yesBtn = document.getElementById("yes-btn");
+      const spotlight = document.getElementById("spotlight");
       const modal = document.getElementById("modal");
       const modalClose = document.getElementById("modal-close");
       const success = document.getElementById("success");
@@ -347,6 +435,18 @@
         if (!noBtn.classList.contains("hidden")) {
           requestAnimationFrame(moveNoButton);
         }
+        updateSpotlight(scale);
+      };
+
+      const updateSpotlight = (scale) => {
+        const stageRect = stage.getBoundingClientRect();
+        const yesRect = yesBtn.getBoundingClientRect();
+        const centerX = yesRect.left - stageRect.left + yesRect.width / 2;
+        const centerY = yesRect.top - stageRect.top + yesRect.height / 2;
+        const size = Math.round(160 + scale * 120);
+        stage.style.setProperty("--spot-x", `${centerX}px`);
+        stage.style.setProperty("--spot-y", `${centerY}px`);
+        stage.style.setProperty("--spot-size", `${size}px`);
       };
 
       const showSuccess = () => {
@@ -389,6 +489,7 @@
         if (!noBtn.classList.contains("hidden")) {
           moveNoButton();
         }
+        updateSpotlight(yesScales[Math.min(noClicks, yesScales.length - 1)]);
       });
 
       moveNoButton();
