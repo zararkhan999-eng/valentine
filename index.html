@@ -248,29 +248,30 @@
     <div class="ambient"></div>
     <main class="stage" id="stage">
       <div>
-        <h1 class="title">are you lonely too at 14 feb?</h1>
-        <p class="subtitle">be honest, i promise it is cute</p>
+        <h1 class="title">Are YOU lonely too at 14 feb?</h1>
+        <p class="subtitle">Be honest, i promise it is cute</p>
       </div>
       <div class="buttons" id="buttons">
-        <button class="btn" id="yes-btn">yes very much</button>
-        <button class="btn" id="no-btn">no fuck off I hate you</button>
+        <button class="btn" id="yes-btn">Yes very much</button>
+        <button class="btn" id="no-btn">No fuck off I hate you</button>
       </div>
       <div class="success" id="success">
         <div class="sparkle"></div>
-        <h2>we are going out (no idea when)</h2>
-        <p>you made my day</p>
+        <h2>We are going out!!! (no idea when)</h2>
+        <p>You made my day</p>
       </div>
     </main>
 
     <div class="modal" id="modal">
       <div class="modal-card">
-        <p>you coudve just do it in the first placr</p>
+        <p>You coudve just do it in the first place bruh</p>
         <button id="modal-close">ok fine</button>
       </div>
     </div>
 
     <script>
       const stage = document.getElementById("stage");
+      const buttons = document.getElementById("buttons");
       const noBtn = document.getElementById("no-btn");
       const yesBtn = document.getElementById("yes-btn");
       const modal = document.getElementById("modal");
@@ -280,13 +281,13 @@
       let noClicks = 0;
       const yesScales = [1, 1.12, 1.28, 1.48, 1.75];
 
-      const rectWithinStage = (rect) => {
-        const stageRect = stage.getBoundingClientRect();
+      const rectWithinContainer = (rect) => {
+        const containerRect = buttons.getBoundingClientRect();
         return {
-          left: rect.left - stageRect.left,
-          top: rect.top - stageRect.top,
-          right: rect.right - stageRect.left,
-          bottom: rect.bottom - stageRect.top,
+          left: rect.left - containerRect.left,
+          top: rect.top - containerRect.top,
+          right: rect.right - containerRect.left,
+          bottom: rect.bottom - containerRect.top,
         };
       };
 
@@ -300,12 +301,12 @@
       };
 
       const moveNoButton = () => {
-        const stageRect = stage.getBoundingClientRect();
+        const containerRect = buttons.getBoundingClientRect();
         const noRect = noBtn.getBoundingClientRect();
-        const yesRect = rectWithinStage(yesBtn.getBoundingClientRect());
+        const yesRect = rectWithinContainer(yesBtn.getBoundingClientRect());
         const padding = 12;
-        const maxX = Math.max(padding, stageRect.width - noRect.width - padding);
-        const maxY = Math.max(padding, stageRect.height - noRect.height - padding);
+        const maxX = Math.max(padding, containerRect.width - noRect.width - padding);
+        const maxY = Math.max(padding, containerRect.height - noRect.height - padding);
 
         let tries = 0;
         let next = null;
@@ -319,7 +320,7 @@
             right: x + noRect.width,
             bottom: y + noRect.height,
           };
-          if (!overlaps(candidate, yesRect, 18)) {
+          if (!overlaps(candidate, yesRect, 28)) {
             next = candidate;
           }
           tries += 1;
@@ -342,6 +343,9 @@
         yesBtn.style.zIndex = 3;
         if (noClicks >= 4) {
           yesBtn.classList.add("yes-big");
+        }
+        if (!noBtn.classList.contains("hidden")) {
+          requestAnimationFrame(moveNoButton);
         }
       };
 
