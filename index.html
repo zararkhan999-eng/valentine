@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>14 Feb</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&family=Baloo+2:wght@500;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --pink-100: #ffe4ef;
+        --pink-200: #ffc1d9;
+        --pink-300: #ff9ac5;
+        --pink-400: #ff6fb2;
+        --pink-500: #ff4aa0;
+        --peach-100: #fff1e9;
+        --lavender-100: #f1e8ff;
+        --ink: #5a2450;
+        --shadow: 0 12px 30px rgba(255, 74, 160, 0.25);
+      }
+
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: radial-gradient(circle at top, var(--peach-100), var(--pink-100) 45%, var(--lavender-100));
+        font-family: "Fredoka", "Baloo 2", sans-serif;
+        color: var(--ink);
+        overflow: hidden;
+      }
+
+      .ambient {
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        background:
+          radial-gradient(circle at 15% 20%, rgba(255, 154, 197, 0.4), transparent 40%),
+          radial-gradient(circle at 80% 15%, rgba(255, 74, 160, 0.25), transparent 35%),
+          radial-gradient(circle at 20% 80%, rgba(255, 193, 217, 0.45), transparent 40%),
+          radial-gradient(circle at 85% 80%, rgba(255, 111, 178, 0.35), transparent 35%);
+        filter: blur(0px);
+      }
+
+      .stage {
+        position: relative;
+        width: min(900px, 92vw);
+        height: clamp(360px, 70vh, 560px);
+        padding: 32px;
+        border-radius: 28px;
+        background: rgba(255, 255, 255, 0.65);
+        backdrop-filter: blur(12px);
+        box-shadow: var(--shadow);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: space-between;
+        gap: 24px;
+        overflow: hidden;
+      }
+
+      .title {
+        font-size: clamp(1.6rem, 3.2vw, 2.5rem);
+        text-align: center;
+        letter-spacing: 0.5px;
+        font-weight: 700;
+      }
+
+      .subtitle {
+        font-size: 1rem;
+        color: rgba(90, 36, 80, 0.8);
+        text-align: center;
+      }
+
+      .buttons {
+        position: relative;
+        width: 100%;
+        flex: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .btn {
+        border: none;
+        border-radius: 999px;
+        padding: 16px 28px;
+        font-size: 1.05rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: transform 0.25s ease, box-shadow 0.25s ease, filter 0.25s ease;
+        font-family: "Baloo 2", sans-serif;
+      }
+
+      #yes-btn {
+        background: linear-gradient(135deg, var(--pink-300), var(--pink-500));
+        color: white;
+        box-shadow: 0 14px 24px rgba(255, 74, 160, 0.35);
+        position: relative;
+        z-index: 2;
+      }
+
+      #no-btn {
+        background: white;
+        color: var(--ink);
+        border: 2px solid rgba(255, 111, 178, 0.6);
+        position: absolute;
+        z-index: 1;
+        box-shadow: 0 10px 20px rgba(255, 154, 197, 0.25);
+      }
+
+      #no-btn.hidden {
+        opacity: 0;
+        pointer-events: none;
+        transform: scale(0.6);
+      }
+
+      .yes-big {
+        transform: scale(1.75);
+        box-shadow: 0 20px 35px rgba(255, 74, 160, 0.45);
+        filter: saturate(1.1);
+      }
+
+      .success {
+        position: absolute;
+        inset: 0;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        gap: 16px;
+        background: rgba(255, 255, 255, 0.85);
+        text-align: center;
+        padding: 32px;
+        z-index: 5;
+      }
+
+      .success.show {
+        display: flex;
+        animation: pop 0.4s ease;
+      }
+
+      .stage.success-active .buttons,
+      .stage.success-active .subtitle {
+        opacity: 0;
+        pointer-events: none;
+      }
+
+      .stage.success-active .title {
+        opacity: 0.2;
+      }
+
+      .success h2 {
+        font-size: clamp(1.6rem, 3vw, 2.4rem);
+      }
+
+      .sparkle {
+        width: 120px;
+        height: 120px;
+        border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%;
+        background: linear-gradient(135deg, var(--pink-200), var(--pink-400));
+        opacity: 0.8;
+        animation: float 3s ease-in-out infinite;
+      }
+
+      .modal {
+        position: fixed;
+        inset: 0;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        background: rgba(255, 192, 218, 0.5);
+        z-index: 10;
+      }
+
+      .modal.show {
+        display: flex;
+      }
+
+      .modal-card {
+        background: white;
+        padding: 24px 32px;
+        border-radius: 22px;
+        box-shadow: var(--shadow);
+        text-align: center;
+        max-width: 320px;
+      }
+
+      .modal-card p {
+        margin-bottom: 16px;
+        font-size: 1.05rem;
+      }
+
+      .modal-card button {
+        border: none;
+        background: var(--pink-400);
+        color: white;
+        padding: 10px 20px;
+        border-radius: 999px;
+        font-weight: 600;
+        cursor: pointer;
+      }
+
+      @keyframes float {
+        0%,
+        100% {
+          transform: translateY(0px);
+        }
+        50% {
+          transform: translateY(-14px);
+        }
+      }
+
+      @keyframes pop {
+        0% {
+          transform: scale(0.9);
+          opacity: 0;
+        }
+        100% {
+          transform: scale(1);
+          opacity: 1;
+        }
+      }
+
+      @media (max-width: 600px) {
+        .stage {
+          padding: 22px;
+        }
+
+        .btn {
+          font-size: 1rem;
+          padding: 14px 20px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="ambient"></div>
+    <main class="stage" id="stage">
+      <div>
+        <h1 class="title">are you lonely too at 14 feb?</h1>
+        <p class="subtitle">be honest, i promise it is cute</p>
+      </div>
+      <div class="buttons" id="buttons">
+        <button class="btn" id="yes-btn">yes very much</button>
+        <button class="btn" id="no-btn">no fuck off I hate you</button>
+      </div>
+      <div class="success" id="success">
+        <div class="sparkle"></div>
+        <h2>we are going out (no idea when)</h2>
+        <p>you made my day</p>
+      </div>
+    </main>
+
+    <div class="modal" id="modal">
+      <div class="modal-card">
+        <p>you coudve just do it in the first placr</p>
+        <button id="modal-close">ok fine</button>
+      </div>
+    </div>
+
+    <script>
+      const stage = document.getElementById("stage");
+      const noBtn = document.getElementById("no-btn");
+      const yesBtn = document.getElementById("yes-btn");
+      const modal = document.getElementById("modal");
+      const modalClose = document.getElementById("modal-close");
+      const success = document.getElementById("success");
+
+      let noClicks = 0;
+      const yesScales = [1, 1.12, 1.28, 1.48, 1.75];
+
+      const rectWithinStage = (rect) => {
+        const stageRect = stage.getBoundingClientRect();
+        return {
+          left: rect.left - stageRect.left,
+          top: rect.top - stageRect.top,
+          right: rect.right - stageRect.left,
+          bottom: rect.bottom - stageRect.top,
+        };
+      };
+
+      const overlaps = (r1, r2, gap = 12) => {
+        return !(
+          r1.right + gap < r2.left ||
+          r1.left - gap > r2.right ||
+          r1.bottom + gap < r2.top ||
+          r1.top - gap > r2.bottom
+        );
+      };
+
+      const moveNoButton = () => {
+        const stageRect = stage.getBoundingClientRect();
+        const noRect = noBtn.getBoundingClientRect();
+        const yesRect = rectWithinStage(yesBtn.getBoundingClientRect());
+        const padding = 12;
+        const maxX = Math.max(padding, stageRect.width - noRect.width - padding);
+        const maxY = Math.max(padding, stageRect.height - noRect.height - padding);
+
+        let tries = 0;
+        let next = null;
+
+        while (tries < 40 && !next) {
+          const x = padding + Math.random() * (maxX - padding);
+          const y = padding + Math.random() * (maxY - padding);
+          const candidate = {
+            left: x,
+            top: y,
+            right: x + noRect.width,
+            bottom: y + noRect.height,
+          };
+          if (!overlaps(candidate, yesRect, 18)) {
+            next = candidate;
+          }
+          tries += 1;
+        }
+
+        if (!next) {
+          next = {
+            left: padding,
+            top: padding,
+          };
+        }
+
+        noBtn.style.left = `${next.left}px`;
+        noBtn.style.top = `${next.top}px`;
+      };
+
+      const updateYesSize = () => {
+        const scale = yesScales[Math.min(noClicks, yesScales.length - 1)];
+        yesBtn.style.transform = `scale(${scale})`;
+        yesBtn.style.zIndex = 3;
+        if (noClicks >= 4) {
+          yesBtn.classList.add("yes-big");
+        }
+      };
+
+      const showSuccess = () => {
+        stage.classList.add("success-active");
+        success.classList.add("show");
+      };
+
+      const showModal = () => {
+        modal.classList.add("show");
+      };
+
+      const hideModal = () => {
+        modal.classList.remove("show");
+      };
+
+      noBtn.addEventListener("click", () => {
+        noClicks += 1;
+        if (noClicks >= 4) {
+          noBtn.classList.add("hidden");
+        } else {
+          moveNoButton();
+        }
+        updateYesSize();
+      });
+
+      yesBtn.addEventListener("click", () => {
+        if (noClicks >= 1) {
+          showModal();
+          return;
+        }
+        showSuccess();
+      });
+
+      modalClose.addEventListener("click", () => {
+        hideModal();
+        showSuccess();
+      });
+
+      window.addEventListener("resize", () => {
+        if (!noBtn.classList.contains("hidden")) {
+          moveNoButton();
+        }
+      });
+
+      moveNoButton();
+      updateYesSize();
+    </script>
+  </body>
+</html>
